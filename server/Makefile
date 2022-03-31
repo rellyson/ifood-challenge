@@ -1,4 +1,4 @@
-PID_FILE = /tmp/ifood-challenge-server.pid
+PID_FILE = /tmp/server.pid
 
 build:
 	go build -o bin/server main.go && clear
@@ -10,8 +10,8 @@ run:
 	bin/server & echo $$! > $(PID_FILE)
 
 watch: build run
-	fswatch -or --event=Updated  ./server ./main.go | \
-	xargs -n1 -I {} make reload
+	fswatch -or --event=Updated  ./ ./main.go | \
+	xargs -n1 make reload
 
 reload: kill build run
 

@@ -1,0 +1,31 @@
+version: '3.7'
+
+services:
+  server:
+    build: 
+      context: ../server/
+    container_name: ifood-server
+    ports:
+      - 3000:3000
+    env_file:
+      - ../server/.env
+    
+  slack-notifier-worker:
+    build: 
+      context: ../workers/slack-notifier
+    container_name: ifood-slack-notifier-worker
+    env_file:
+      - ../workers/slack-notifier/.env
+    depends_on:
+      - server
+  
+  localstack:
+    container_name: ifood-localstack
+    image: localstack/localstack
+    ports:
+      - "4566:4566"
+      - "8080:8080"
+    environment:
+      - SERVICES=sqs
+    volumes:
+      - ./localstack:/docker-entrypoint-initaws.d/

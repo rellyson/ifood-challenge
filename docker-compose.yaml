@@ -1,0 +1,21 @@
+version: '3.7'
+
+services:
+  server:
+    extends:
+      file: .docker/common-services.yaml
+      service: server
+    build: 
+      target: base
+    
+  slack-notifier-worker:
+   extends:
+      file: .docker/common-services.yaml
+      service: slack-notifier-worker
+   build: 
+      target: base
+  
+  localstack:
+     extends:
+      file: .docker/common-services.yaml
+      service: localstack
