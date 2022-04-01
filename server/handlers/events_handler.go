@@ -5,6 +5,8 @@ import (
 	"errors"
 	"io"
 	"net/http"
+
+	"github.com/rellyson/ifood-challenge/server/utils"
 )
 
 type NotifyAlertPayload struct {
@@ -24,17 +26,7 @@ func (p *NotifyAlertPayload) validate() error {
 }
 
 func NotifyAlertHandler(w http.ResponseWriter, r *http.Request) {
-	if r.Method != "POST" {
-		http.Error(w, "Method not Allowed", http.StatusMethodNotAllowed)
-		return
-	}
-
 	b, _ := io.ReadAll(r.Body)
-
-	if b == nil {
-		http.Error(w, "Missing request body", http.StatusBadRequest)
-		return
-	}
 
 	payload := NotifyAlertPayload{}
 	json.Unmarshal(b, &payload)
@@ -42,6 +34,8 @@ func NotifyAlertHandler(w http.ResponseWriter, r *http.Request) {
 	err := payload.validate()
 
 	if err != nil {
-		http.Error(w, err.Error(), http.StatusBadRequest)
+		utils.ServerError(w, http.StatusBadRequest, "Payload is invalid: "+err.Error())
 	}
+
+	w.WriteHeader(http.StatusCreated)
 }

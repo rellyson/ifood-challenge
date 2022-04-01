@@ -26,6 +26,7 @@ func bootstrap() {
 
 	http.Handle("/", s)
 	listener, err := net.Listen("tcp", a)
+
 	if err != nil {
 		log.Fatal(err)
 	}
