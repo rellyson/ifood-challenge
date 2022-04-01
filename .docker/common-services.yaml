@@ -6,7 +6,7 @@ services:
       context: ../server/
     container_name: ifood-server
     ports:
-      - 3000:3000
+      - "3000:3000"
     env_file:
       - ../server/.env
     
