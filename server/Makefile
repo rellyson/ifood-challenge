@@ -1,5 +1,8 @@
 PID_FILE = /tmp/server.pid
 
+prepare:
+	go mod download
+
 build:
 	go build -o bin/server main.go && clear
 
@@ -16,7 +19,7 @@ watch: build run
 reload: kill build run
 
 # .PHONY is used for reserving tasks words
-.PHONY: build kill reload watch
+.PHONY: build kill reload watch prepare
 
 # supress echo commands on cli
-.SILENT: build kill run watch reload
+.SILENT: build kill run watch reload prepare

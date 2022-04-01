@@ -1,0 +1,27 @@
+version: '3.7'
+
+services:
+  server:
+    extends:
+      file: common-services.yaml
+      service: server
+    build:
+      target: develop
+    command: sh -c "make prepare && make watch --no-print-directory"
+    volumes:
+      - ../server:/opt/ifood/server
+
+  slack-notifier-worker:
+    extends:
+      file: common-services.yaml
+      service: slack-notifier-worker
+    build:
+      target: develop
+    command: sh -c "make prepare && make watch --no-print-directory"
+    volumes:
+      - ../workers/slack-notifier:/opt/ifood/slack-notifier-worker
+
+  localstack:
+    extends:
+      file: common-services.yaml
+      service: localstack

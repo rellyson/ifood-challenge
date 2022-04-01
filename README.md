@@ -20,6 +20,20 @@ Your system **must have the following components**:
 - The server, worker and AWS environment must be dockerized.
 - Documentation and testing.
 
+## Running the project
+
+To run the project you have these alternatives:
+
+``` shell
+## Runs using base image
+$ docker-compose up
+
+## Runs in a development environment, enabling auto reload.
+$ docker-compose -f .docker/dev-compose.yaml up
+
+```
+
+
 ## Useful links
 
 - [AWS SDK for Go](https://aws.github.io/aws-sdk-go-v2/docs/getting-started/)
