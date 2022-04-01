@@ -24,16 +24,46 @@ Your system **must have the following components**:
 
 To run the project you have these alternatives:
 
-``` shell
-## Runs using base image
+``` bash
+# Runs using base image
 $ docker-compose up
 
-## Runs in a development environment, enabling auto reload.
+# Runs in a development environment, enabling auto reload
 $ docker-compose -f .docker/dev-compose.yaml up
 
 ```
 
+## Sending an alert notification
+
+To send an alert notification to a Slack channel through this system, send a request to `/events/notify_alert` endpoint following the payload specified below.
+
+``` JSON
+{
+    "channel": "my-notification-channel",
+    "messsage": "Hi from notification server"
+}
+```
+
+Example:
+
+``` bash
+
+# Using curl
+curl --header "Content-Type: application/json" \
+  --request POST \
+  --data '{"channel":"my-notification-channel","messsage":"This is a message"}' \
+  http://localhost:3000/events/notify_alert
+
+```
+
+## How alert notification works
+
+This diagram ilustrates the notify alert sequence flow.
+
+<img src="./assets/notify-alert-sequence.png"/>
 
 ## Useful links
 
+- [PlantUML](https://plantuml.com/)
 - [AWS SDK for Go](https://aws.github.io/aws-sdk-go-v2/docs/getting-started/)
+- [AWS SDK for Python](https://boto3.amazonaws.com/v1/documentation/api/latest/index.html)

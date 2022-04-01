@@ -1,0 +1,29 @@
+@startuml Notify alert sequence
+
+Actor Notifier as nf
+Participant Server as sv
+Queue AWS_SQS as sqs
+participant Worker as wk
+participant Slack as sl
+
+nf --> sv: Notification request
+sv -> sv: Validate request payload
+
+alt Payload ok
+    sv --> sqs: Send notify alert event message to queue
+    sv --> nf: Request completed
+else Invalid payload
+    sv --> nf: 400 Bad Request
+end
+
+sqs <-- wk: Get message from queue
+wk -> wk: Consume message
+
+alt Notification sent
+    wk --> sl: Send message to Slack channel
+    sqs <-- wk: Delete message from queue
+else Error
+    sqs <-- wk: Release message back to queue
+end
+
+@enduml
