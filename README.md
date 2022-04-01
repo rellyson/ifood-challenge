@@ -35,7 +35,7 @@ $ docker-compose -f .docker/dev-compose.yaml up
 
 ## Sending an alert notification
 
-To send an alert notification to a Slack channel through this system, send a request to `/events/notify_alert` endpoint following the payload specified below.
+To send an alert notification to a Slack channel through this system, send a request to `/v1/events/notify_alert` endpoint following the payload specified below.
 
 ``` JSON
 {
@@ -52,7 +52,7 @@ Example:
 curl --header "Content-Type: application/json" \
   --request POST \
   --data '{"channel":"my-notification-channel","messsage":"This is a message"}' \
-  http://localhost:3000/events/notify_alert
+  http://localhost:3000/v1/events/notify_alert
 
 ```
 

@@ -6,6 +6,7 @@ import (
 	"net/http"
 	"os"
 
+	"github.com/gorilla/mux"
 	"github.com/rellyson/ifood-challenge/server/handlers"
 )
 
@@ -17,9 +18,13 @@ func bootstrap() {
 		log.Fatal("Missing APP_ADDR environment variable!")
 	}
 
-	http.HandleFunc("/healthcheck", handlers.HealthcheckHandler)
-	http.HandleFunc("/events/notify_alert", handlers.NotifyAlertHandler)
+	router := mux.NewRouter()
+	s := router.PathPrefix("/v1/").Subrouter()
 
+	s.HandleFunc("/healthcheck", handlers.HealthcheckHandler).Methods(http.MethodGet)
+	s.HandleFunc("/events/notify_alert", handlers.NotifyAlertHandler).Methods(http.MethodPost).Headers("Content-type", "application/json")
+
+	http.Handle("/", s)
 	listener, err := net.Listen("tcp", a)
 	if err != nil {
 		log.Fatal(err)
