@@ -8,6 +8,7 @@ import (
 
 	"github.com/gorilla/mux"
 	"github.com/rellyson/ifood-challenge/server/handlers"
+	"github.com/rellyson/ifood-challenge/server/middlewares"
 )
 
 func bootstrap() {
@@ -23,6 +24,7 @@ func bootstrap() {
 
 	s.HandleFunc("/healthcheck", handlers.HealthcheckHandler).Methods(http.MethodGet)
 	s.HandleFunc("/events/notify_alert", handlers.NotifyAlertHandler).Methods(http.MethodPost).Headers("Content-type", "application/json")
+	s.Use(middlewares.LoggingMiddleware)
 
 	http.Handle("/", s)
 	listener, err := net.Listen("tcp", a)
