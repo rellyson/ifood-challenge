@@ -14,5 +14,4 @@ func HealthcheckHandler(w http.ResponseWriter, r *http.Request) {
 	data := HealthcheckResponse{}
 	data.Message = "OK"
 	json.NewEncoder(w).Encode(data)
-	w.WriteHeader(http.StatusOK)
 }
