@@ -10,6 +10,8 @@ services:
     command: sh -c "make prepare && make watch --no-print-directory"
     volumes:
       - ../server:/opt/ifood/server
+    env_file:
+      - ../server/conf/develop.env
 
   slack-notifier-worker:
     extends:
