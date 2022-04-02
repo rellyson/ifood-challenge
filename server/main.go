@@ -2,39 +2,19 @@ package main
 
 import (
 	"log"
-	"net"
-	"net/http"
-	"os"
 
-	"github.com/gorilla/mux"
-	"github.com/rellyson/ifood-challenge/server/handlers"
-	"github.com/rellyson/ifood-challenge/server/middlewares"
+	"github.com/rellyson/ifood-challenge/server/aws"
+	"github.com/rellyson/ifood-challenge/server/http"
 )
 
 func bootstrap() {
 	log.Print("Bootstraping application...")
-	a, exists := os.LookupEnv("APP_ADDR")
 
-	if !exists {
-		log.Fatal("Missing APP_ADDR environment variable!")
-	}
+	//set and start a new SQSConfig
+	aws.NewSQSClient()
 
-	router := mux.NewRouter()
-	s := router.PathPrefix("/v1/").Subrouter()
-
-	s.HandleFunc("/healthcheck", handlers.HealthcheckHandler).Methods(http.MethodGet)
-	s.HandleFunc("/events/notify_alert", handlers.NotifyAlertHandler).Methods(http.MethodPost).Headers("Content-type", "application/json")
-	s.Use(middlewares.LoggingMiddleware)
-
-	http.Handle("/", s)
-	listener, err := net.Listen("tcp", a)
-
-	if err != nil {
-		log.Fatal(err)
-	}
-
-	log.Printf("Application is listenning at: %v", a)
-	log.Fatal(http.Serve(listener, nil))
+	// set configs and start http server
+	http.SetHttpServer()
 }
 
 func main() {
