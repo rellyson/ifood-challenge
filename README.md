@@ -51,7 +51,7 @@ Example:
 # Using curl
 curl --header "Content-Type: application/json" \
   --request POST \
-  --data '{"channel":"my-notification-channel","messsage":"This is a message"}' \
+  --data '{"channel":"my-notification-channel","message":"This is a message"}' \
   http://localhost:3000/v1/events/notify_alert
 
 ```
