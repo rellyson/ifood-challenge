@@ -4,13 +4,15 @@ import (
 	"net/http"
 
 	"github.com/gorilla/mux"
+	"github.com/rellyson/ifood-challenge/server/aws"
 	"github.com/rellyson/ifood-challenge/server/controllers"
 	"github.com/rellyson/ifood-challenge/server/http/middlewares"
 	"github.com/rellyson/ifood-challenge/server/service"
 )
 
 var (
-	messageService        service.MessageService            = service.NewMessageService()
+	sqsClient             aws.SQSClient                     = aws.NewSQSClient()
+	messageService        service.MessageService            = service.NewMessageService(sqsClient)
 	healthcheckController controllers.HealthCheckController = controllers.NewHealthCheckController()
 	eventsController      controllers.EventsController      = controllers.NewEventsController(messageService)
 )
