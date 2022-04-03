@@ -19,10 +19,10 @@ type EventsController interface {
 type handler struct{}
 
 var (
-	messageService service.MessageService
+	messageService service.MessagingService
 )
 
-func NewEventsController(service service.MessageService) EventsController {
+func NewEventsController(service service.MessagingService) EventsController {
 	messageService = service
 	return &handler{}
 }

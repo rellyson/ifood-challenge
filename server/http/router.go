@@ -12,9 +12,9 @@ import (
 
 var (
 	sqsClient             aws.SQSClient                     = aws.NewSQSClient()
-	messageService        service.MessageService            = service.NewMessageService(sqsClient)
+	messaging             service.MessagingService          = service.NewMessagingService(sqsClient)
 	healthcheckController controllers.HealthCheckController = controllers.NewHealthCheckController()
-	eventsController      controllers.EventsController      = controllers.NewEventsController(messageService)
+	eventsController      controllers.EventsController      = controllers.NewEventsController(messaging)
 )
 
 func UseRouter(router *mux.Router) {
