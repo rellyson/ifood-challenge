@@ -20,6 +20,8 @@ services:
     command: sh -c "make prepare && make watch --no-print-directory"
     volumes:
       - ../workers/slack-notifier:/opt/ifood/slack-notifier-worker
+    environment:
+      - PYTHONUNBUFFERED=1
 
   localstack:
     extends:
