@@ -10,9 +10,22 @@ import (
 )
 
 func AwsConfig() aws.Config {
-	r := os.Getenv("AWS_REGION")
+	region := os.Getenv("AWS_REGION")
+	endpoint := os.Getenv("AWS_ENDPOINT")
 
-	cfg, err := config.LoadDefaultConfig(context.TODO(), config.WithRegion(r))
+	customResolver := aws.EndpointResolverWithOptionsFunc(func(service, region string, options ...interface{}) (aws.Endpoint, error) {
+		if endpoint != "" && region != "" {
+			return aws.Endpoint{
+				PartitionID:   "aws",
+				URL:           endpoint,
+				SigningRegion: region,
+			}, nil
+		}
+		// returning EndpointNotFoundError will allow the service to fallback to it's default resolution
+		return aws.Endpoint{}, &aws.EndpointNotFoundError{}
+	})
+
+	cfg, err := config.LoadDefaultConfig(context.TODO(), config.WithRegion(region), config.WithEndpointResolverWithOptions(customResolver))
 	if err != nil {
 		log.Fatalf("unable to load SDK config, %v", err)
 	}
