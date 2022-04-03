@@ -68,3 +68,5 @@ This diagram ilustrates the notify alert sequence flow.
 - [AWS SDK for Go](https://aws.github.io/aws-sdk-go-v2/docs/getting-started/)
 - [AWS SDK for Python](https://boto3.amazonaws.com/v1/documentation/api/latest/index.html)
 - [Boto3 Guide](https://boto3.amazonaws.com/v1/documentation/api/1.21.30/guide/sqs-examples.html)
+- [Slack Apps Portal](https://api.slack.com/apps)
+- [Slack SDK for Python](https://pypi.org/project/slack-sdk/#sending-a-message-to-slack)
