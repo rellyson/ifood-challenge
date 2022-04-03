@@ -1,9 +1,11 @@
 from logging import fatal, debug
 import os
+from re import S
 import sys
 
 from aws.sqs_client import new_client
 from events.notify_alert_event import NotifyAlertEvent
+from services.slack_service import SlackService
 
 if __name__ == "__main__":
     print("Starting worker...")
@@ -15,5 +17,7 @@ if __name__ == "__main__":
         print("Missing queue_url for notify alert event. Exiting...")
         sys.exit()
 
-    event = NotifyAlertEvent(sqs)
+    slack = SlackService()
+
+    event = NotifyAlertEvent(sqs, slack)
     event.handle(queue_url)
