@@ -1,4 +1,4 @@
-package handlers_test
+package controllers_test
 
 import (
 	"io"
@@ -6,11 +6,14 @@ import (
 	"net/http/httptest"
 	"testing"
 
-	"github.com/rellyson/ifood-challenge/server/handlers"
+	"github.com/rellyson/ifood-challenge/server/controllers"
 	"github.com/stretchr/testify/assert"
 )
 
-func TestHealthcheckHandler(t *testing.T) {
+func TestStatus(t *testing.T) {
+
+	testController := controllers.NewHealthCheckController()
+
 	req, err := http.NewRequest("GET", "/v1/healthcheck", nil)
 	if err != nil {
 		t.Fatal(err)
@@ -18,7 +21,7 @@ func TestHealthcheckHandler(t *testing.T) {
 
 	// Creating a ResponseRecorder to record the response.
 	rr := httptest.NewRecorder()
-	handlers.HealthcheckHandler(rr, req)
+	testController.Status(rr, req)
 	res := rr.Result()
 
 	// Check the status code is what we expect.

@@ -11,7 +11,7 @@ import (
 type LoggingPayload struct {
 	Date       time.Time           `json:"date"`
 	Method     string              `json:"method"`
-	RequestURL string              `json:"request_url"`
+	RequestURI string              `json:"request_uri"`
 	UserAgent  string              `json:"user_agent"`
 	Headers    map[string][]string `json:"headers"`
 	Body       string              `json:"body"`
@@ -22,13 +22,15 @@ func LoggingMiddleware(next http.Handler) http.Handler {
 		p := LoggingPayload{}
 		p.Date = time.Now()
 		p.Method = r.Method
-		p.RequestURL = r.RequestURI
+		p.RequestURI = r.RequestURI
 		p.UserAgent = r.UserAgent()
 		p.Headers = r.Header
 		p.Body = convertBodyToString(r.Body)
 
 		v, _ := json.Marshal(&p)
 		fmt.Println(string(v))
+
+		next.ServeHTTP(w, r)
 	})
 }
 

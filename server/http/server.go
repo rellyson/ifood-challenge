@@ -2,12 +2,10 @@ package http
 
 import (
 	"log"
-	"net"
 	"net/http"
 	"os"
 
 	"github.com/gorilla/mux"
-	"github.com/rellyson/ifood-challenge/server/handlers"
 )
 
 func SetHttpServer() {
@@ -18,18 +16,8 @@ func SetHttpServer() {
 	}
 
 	router := mux.NewRouter()
-	s := router.PathPrefix("/v1/").Subrouter()
+	UseRouter(router)
 
-	s.HandleFunc("/healthcheck", handlers.HealthcheckHandler).Methods(http.MethodGet)
-	s.HandleFunc("/events/notify_alert", handlers.NotifyAlertHandler).Methods(http.MethodPost).Headers("Content-type", "application/json")
-
-	http.Handle("/", s)
-	listener, err := net.Listen("tcp", a)
-
-	if err != nil {
-		log.Fatal(err)
-	}
-
-	log.Printf("Application is listenning at: %v", a)
-	log.Fatal(http.Serve(listener, nil))
+	log.Printf("Starting to serve application at: %v", a)
+	log.Fatal(http.ListenAndServe(a, router))
 }
