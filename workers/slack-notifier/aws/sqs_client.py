@@ -1,0 +1,19 @@
+from distutils.log import fatal
+import boto3
+import os
+
+
+def new_client():
+    region = os.environ.get('AWS_REGION')
+    endpoint = os.environ.get('AWS_ENDPOINT')
+    access_id = os.environ.get('AWS_ACCESS_KEY_ID')
+    access_key = os.environ.get('AWS_SECRET_ACCESS_KEY')
+
+    if(endpoint == None or region == None):
+        fatal("Missing required env variables")
+    sqs = boto3.client("sqs", region_name=region,
+                       endpoint_url=endpoint,
+                       aws_access_key_id=access_id,
+                       aws_secret_access_key=access_key)
+
+    return sqs

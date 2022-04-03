@@ -15,7 +15,7 @@ services:
       context: ../workers/slack-notifier
     container_name: ifood-slack-notifier-worker
     env_file:
-      - ../workers/slack-notifier/.env
+      - ../workers/slack-notifier/conf/default.env
     depends_on:
       - server
   
