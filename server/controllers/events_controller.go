@@ -70,6 +70,7 @@ func (*handler) NotifyAlert(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
 	w.WriteHeader(http.StatusCreated)
 	json.NewEncoder(w).Encode(service.SendMessageResponse{
+		Status:    serviceRes.Status,
 		MessageId: serviceRes.MessageId,
 		MD5OfBody: serviceRes.MD5OfBody,
 	})

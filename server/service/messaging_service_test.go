@@ -18,8 +18,8 @@ func TestSendingMessage(t *testing.T) {
 	var bodyMd5 string = "justarandomstring"
 
 	sqsClientMock.On("SQSSendMessage").Return(awsSQS.SendMessageOutput{
-		MessageId:        &messageId,
 		MD5OfMessageBody: &bodyMd5,
+		MessageId:        &messageId,
 	}, nil)
 
 	res, _ := testService.SendMessageToQueue(service.SendMessagePayload{
