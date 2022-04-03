@@ -3,7 +3,6 @@ package middlewares
 import (
 	"encoding/json"
 	"fmt"
-	"io"
 	"net/http"
 	"time"
 )
@@ -14,7 +13,6 @@ type LoggingPayload struct {
 	RequestURI string              `json:"request_uri"`
 	UserAgent  string              `json:"user_agent"`
 	Headers    map[string][]string `json:"headers"`
-	Body       string              `json:"body"`
 }
 
 func LoggingMiddleware(next http.Handler) http.Handler {
@@ -25,17 +23,10 @@ func LoggingMiddleware(next http.Handler) http.Handler {
 		p.RequestURI = r.RequestURI
 		p.UserAgent = r.UserAgent()
 		p.Headers = r.Header
-		p.Body = convertBodyToString(r.Body)
 
 		v, _ := json.Marshal(&p)
 		fmt.Println(string(v))
 
 		next.ServeHTTP(w, r)
 	})
-}
-
-func convertBodyToString(b io.ReadCloser) string {
-	body, _ := io.ReadAll(b)
-
-	return fmt.Sprintf("%v", string(body))
 }

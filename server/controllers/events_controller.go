@@ -32,7 +32,7 @@ type NotifyAlertPayload struct {
 	Message any    `json:"message"`
 }
 
-func (p *NotifyAlertPayload) validateNotifyAlertPayload() error {
+func (p *NotifyAlertPayload) validate() error {
 	if p.Channel == "" {
 		return errors.New("channel field is missing")
 	}
@@ -49,7 +49,7 @@ func (*handler) NotifyAlert(w http.ResponseWriter, r *http.Request) {
 	payload := NotifyAlertPayload{}
 	json.Unmarshal(b, &payload)
 
-	validationErr := payload.validateNotifyAlertPayload()
+	validationErr := payload.validate()
 
 	if validationErr != nil {
 		utils.ServerError(w, http.StatusBadRequest, "Payload is invalid: "+validationErr.Error())
