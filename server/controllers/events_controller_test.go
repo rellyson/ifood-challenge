@@ -31,8 +31,9 @@ func TestNotifyAlert(t *testing.T) {
 	res := rr.Result()
 
 	expectedPayload := `{
-		"MD5OfBody":"",
-		"MessageId":""
+		"md5_of_body":"",
+		"message_id":"",
+		"status":""
 	}`
 
 	// Check the status code is what we expect.

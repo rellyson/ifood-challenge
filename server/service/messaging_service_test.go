@@ -14,13 +14,7 @@ func TestSendingMessage(t *testing.T) {
 	sqsClientMock := new(mocks.SQS)
 	testService := service.NewMessagingService(sqsClientMock)
 
-	var messageId string = "aa98bb56-96a6-4496-a21e-2882f823d6be"
-	var bodyMd5 string = "justarandomstring"
-
-	sqsClientMock.On("SQSSendMessage").Return(awsSQS.SendMessageOutput{
-		MD5OfMessageBody: &bodyMd5,
-		MessageId:        &messageId,
-	}, nil)
+	sqsClientMock.On("SQSSendMessage").Return(awsSQS.SendMessageOutput{}, nil)
 
 	res, _ := testService.SendMessageToQueue(service.SendMessagePayload{
 		QueueUrl: "test",
@@ -29,8 +23,8 @@ func TestSendingMessage(t *testing.T) {
 
 	assert.Equal(t, service.SendMessageResponse{
 		Status:    "SENT",
-		MessageId: messageId,
-		MD5OfBody: bodyMd5,
+		MessageId: "",
+		MD5OfBody: "",
 	}, res)
 }
 

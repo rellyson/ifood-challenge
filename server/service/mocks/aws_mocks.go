@@ -12,7 +12,13 @@ type SQS struct {
 func (m *SQS) SQSSendMessage(queueUrl string, message string) (awsSQS.SendMessageOutput, error) {
 	args := m.Called()
 
-	return awsSQS.SendMessageOutput{}, args.Error(1)
+	var messageId string = ""
+	var bodyMd5 string = ""
+
+	return awsSQS.SendMessageOutput{
+		MD5OfMessageBody: &bodyMd5,
+		MessageId:        &messageId,
+	}, args.Error(1)
 }
 
 func (m *SQS) SQSDeleteMessage(queueUrl string, rcvHnd string) (awsSQS.DeleteMessageOutput, error) {
