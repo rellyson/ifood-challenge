@@ -9,6 +9,8 @@ services:
       - "3000:3000"
     env_file:
       - ../server/conf/default.env
+    depends_on:
+      - localstack
     
   slack-notifier-worker:
     build: 
@@ -18,6 +20,7 @@ services:
       - ../workers/slack-notifier/conf/default.env
     depends_on:
       - server
+      - localstack
   
   localstack:
     container_name: ifood-localstack

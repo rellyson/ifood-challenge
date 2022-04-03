@@ -1,17 +1,20 @@
 prepare:
-	pip install --no-cache-dir -r requirements.txt
+	pip install --no-cache-dir -r requirements.txt --quiet --exists-action i
 
 run:
-	python main.py
+	python ./main.py
+
+kill:
+	- pkill -9 -f main.py 
 
 watch: run
 	fswatch -or --event=Updated  ./ | \
 	xargs -n1 make reload
 
-reload: run watch
+reload: kill watch
 
 # .PHONY is used for reserving tasks words
-.PHONY: watch run reload
+.PHONY: watch run reload kill prepare
 
 # supress echo commands on cli
-.SILENT: run watch reload
+.SILENT: reload
