@@ -56,9 +56,17 @@ func (*handler) NotifyAlert(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	alertMessage := struct {
+		Channel string `json:"channel"`
+		Message any    `json:"message"`
+	}{
+		payload.Channel,
+		payload.Message,
+	}
+
 	serviceRes, serviceErr := messageService.SendMessageToQueue(service.SendMessagePayload{
 		QueueUrl: os.Getenv("SQS_NOTIFY_QUEUE"),
-		Message:  payload.Message,
+		Message:  alertMessage,
 	})
 
 	if serviceErr != nil {
