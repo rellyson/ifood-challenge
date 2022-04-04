@@ -27,10 +27,10 @@ else Error
             loop
                 sqs <-- wk: Release message back to queue
                 sqs <-- wk: Get message again after X seconds
-                wk --> wk: Retry message
+                wk -> wk: Retry message
             end
-        else Max retry limit reached
-            sqs <- wk: Send SQS message to dead letter queue
+        else Max receive count reached
+            sqs <- sqs: Send message to dead letter queue
     end
 end
 
