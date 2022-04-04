@@ -40,7 +40,6 @@ class NotifyAlertEvent:
             except:
                 print("Error handling event message with id {}. Will try again in {} seconds.".format(
                     message_id, wait_time_secs))
-                raise
 
     def handle(self, received_signal: bool, queue_url: str, wait_time_secs: int):
         print("Started listening to messages at: {}".format(queue_url))

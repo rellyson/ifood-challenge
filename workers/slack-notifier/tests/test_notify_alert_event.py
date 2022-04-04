@@ -53,9 +53,8 @@ def test_delivery_message_error_handling(mock_slack_service, mock_event):
         MessageBody=("{\"channel\":\"teste\",\"message\":\"teste\"}")
     )
     mock_slack_service.post_message.side_effect = Exception()
-    with pytest.raises(Exception):
-        mock_event.delivery_incoming_messages(
-            queue_url=queue_url, wait_time_secs=10)
+    mock_event.delivery_incoming_messages(
+        queue_url=queue_url, wait_time_secs=10)
 
 
 def test_handle_events(mock_event):
