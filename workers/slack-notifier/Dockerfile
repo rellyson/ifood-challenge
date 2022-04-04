@@ -3,7 +3,7 @@ FROM python:3.10.4-alpine3.14 as base
 
 WORKDIR /opt/ifood/slack-notifier-worker
 
-RUN apk add --no-cache build-base
+RUN apk add --no-cache build-base libffi-dev gcc libc-dev
 
 ## download requirements
 COPY requirements.txt ./
@@ -21,7 +21,8 @@ FROM python:3.10.4-alpine3.14 as develop
 WORKDIR /opt/ifood/slack-notifier-worker
 
 RUN apk add --no-cache autoconf git build-base \
-    automake libtool gettext gettext-dev make g++ texinfo curl
+    automake libtool gettext gettext-dev make g++ \
+    texinfo curl libffi-dev gcc libc-dev
 
 RUN pip install --upgrade pip
 
