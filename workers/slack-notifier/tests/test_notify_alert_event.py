@@ -10,7 +10,9 @@ from services.slack_service import SlackService
 @pytest.fixture
 @mock_sqs
 def mock_sqs_client():
-    client = boto3.client("sqs")
+    client = boto3.client("sqs", region_name='us-east-1',
+                          aws_access_key_id='access_id',
+                          aws_secret_access_key='access_key')
 
     return client
 
