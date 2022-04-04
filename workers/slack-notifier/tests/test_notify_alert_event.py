@@ -29,7 +29,9 @@ def mock_event(mock_sqs_client, mock_slack_service):
 
 @mock_sqs
 def test_delivery_message_succesfully(mock_slack_service, mock_event):
-    sqs = boto3.client("sqs")
+    sqs = boto3.client("sqs", region_name='us-east-1',
+                       aws_access_key_id='access_id',
+                       aws_secret_access_key='access_key')
     res = sqs.create_queue(QueueName='test_queue')
 
     queue_url = res["QueueUrl"]
@@ -46,7 +48,9 @@ def test_delivery_message_succesfully(mock_slack_service, mock_event):
 
 @mock_sqs
 def test_delivery_message_error_handling(mock_slack_service, mock_event):
-    sqs = boto3.client("sqs")
+    sqs = boto3.client("sqs", region_name='us-east-1',
+                       aws_access_key_id='access_id',
+                       aws_secret_access_key='access_key')
     res = sqs.create_queue(QueueName='test_queue')
 
     queue_url = res["QueueUrl"]
