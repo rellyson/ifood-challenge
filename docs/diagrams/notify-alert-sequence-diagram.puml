@@ -19,11 +19,19 @@ end
 sqs <-- wk: Get message from queue
 wk -> wk: Consume message
 
-alt Notification sent
+alt Notification ok
     wk --> sl: Send message to Slack channel
     sqs <-- wk: Delete message from queue
 else Error
-    sqs <-- wk: Release message back to queue
+        alt Retry send notification
+            loop
+                sqs <-- wk: Release message back to queue
+                sqs <-- wk: Get message again after X seconds
+                wk --> wk: Retry message
+            end
+        else Max retry limit reached
+            sqs <- wk: Send SQS message to dead letter queue
+    end
 end
 
 @enduml
