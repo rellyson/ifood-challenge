@@ -6,7 +6,7 @@ import (
 
 	awsSQS "github.com/aws/aws-sdk-go-v2/service/sqs"
 	"github.com/rellyson/ifood-challenge/server/service"
-	"github.com/rellyson/ifood-challenge/server/service/mocks"
+	"github.com/rellyson/ifood-challenge/server/tests/mocks"
 	"github.com/stretchr/testify/assert"
 )
 

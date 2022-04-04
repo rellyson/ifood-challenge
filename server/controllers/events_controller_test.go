@@ -9,8 +9,8 @@ import (
 	"testing"
 
 	"github.com/rellyson/ifood-challenge/server/controllers"
-	"github.com/rellyson/ifood-challenge/server/controllers/mocks"
 	"github.com/rellyson/ifood-challenge/server/service"
+	"github.com/rellyson/ifood-challenge/server/tests/mocks"
 	"github.com/stretchr/testify/assert"
 )
 
