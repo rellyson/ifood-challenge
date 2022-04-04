@@ -1,23 +1,25 @@
-from logging import fatal, debug
 import os
-from re import S
+from slack_sdk import WebClient
 import sys
 
-from aws.sqs_client import new_client
+from aws.sqs_client import SQSClient
 from events.notify_alert_event import NotifyAlertEvent
 from services.slack_service import SlackService
 
 if __name__ == "__main__":
     print("Starting worker...")
-
-    sqs = new_client()
     queue_url = os.environ.get('SQS_NOTIFY_ALERT_QUEUE')
+    bot_token = os.environ.get('SLACK_BOT_TOKEN')
 
-    if(queue_url == None):
-        print("Missing queue_url for notify alert event. Exiting...")
+    if(queue_url == None or bot_token == None):
+        print("Missing required environment variables. Exiting...")
         sys.exit()
 
-    slack = SlackService()
-
+    # dependencies setup
+    sqs = SQSClient()
+    slack_webClient = WebClient(token=bot_token)
+    slack = SlackService(slack_webClient)
     event = NotifyAlertEvent(sqs, slack)
+
+    # start to handle events
     event.handle(queue_url)

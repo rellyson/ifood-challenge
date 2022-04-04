@@ -3,7 +3,7 @@ import boto3
 import os
 
 
-def new_client():
+def SQSClient():
     region = os.environ.get('AWS_REGION')
     endpoint = os.environ.get('AWS_ENDPOINT')
     access_id = os.environ.get('AWS_ACCESS_KEY_ID')
