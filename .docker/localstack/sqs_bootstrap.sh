@@ -17,5 +17,5 @@ DLQ_SQS_ARN=$(aws --endpoint-url=$LOCALSTACK_ENDPOINT sqs get-queue-attributes\
 # event queue 
 aws --endpoint-url=$LOCALSTACK_ENDPOINT sqs create-queue --queue-name notify_alert_event --region $AWS_DEFAULT_REGION \
     --attributes '{
-                    "RedrivePolicy": "{\"deadLetterTargetArn\":\"'"$DLQ_SQS_ARN"'\",\"maxReceiveCount\":\"10\"}",
+                    "RedrivePolicy": "{\"deadLetterTargetArn\":\"'"$DLQ_SQS_ARN"'\",\"maxReceiveCount\":\"10\"}"
                     }'
