@@ -1,5 +1,4 @@
 import asyncio
-from more_itertools import side_effect
 import pytest
 from unittest.mock import patch
 from slack_sdk.errors import SlackApiError

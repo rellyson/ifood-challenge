@@ -1,5 +1,6 @@
 import os
 from slack_sdk import WebClient
+from utils.signal_handler import SignalHandler
 import sys
 
 from aws.sqs_client import SQSClient
@@ -21,5 +22,9 @@ if __name__ == "__main__":
     slack = SlackService(slack_webClient)
     event = NotifyAlertEvent(sqs, slack)
 
+    # handles SIGINT and SIGTERM signals to stop process
+    signal_handler = SignalHandler()
+
     # start to handle events
-    event.handle(queue_url)
+    event.handle(received_signal=signal_handler.received_signal,
+                 queue_url=queue_url, wait_time_secs=10)

@@ -19,7 +19,7 @@ class SlackServiceInterface:
 
 
 class SlackService(SlackServiceInterface):
-    def __init__(self, client: WebClient):
+    def __init__(self, client: WebClient)  -> None:
         self.web_client = client
 
     async def post_message(self, message: PostMessagePayload):
