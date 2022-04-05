@@ -14,13 +14,38 @@ Your system **must have the following components**:
 - An AWS SQS queue.
 - A worker that consumes these messages from the queue and post them to the *Slack* channel.
 
-## Project requirements
+### Project requirements
 
 - The server must be implemented in Go and the worker in Python.
 - The server, worker and AWS environment must be dockerized.
 - Documentation and testing.
 
-## Running the project
+## How alert notification works
+  
+This diagram ilustrates the notify alert sequence flow.
+  
+<img src="./assets/notify-alert-sequence.png"/>
+
+## Usage
+
+### Create and configure a *Slack App* to send messages
+
+You need a *Slack App* to be able to send messages to a channel. You can create an app following [this tutorial](https://slack.com/help/articles/115005265703-Create-a-bot-for-your-workspace).
+After creating a bot, you need to set some configurations to be able to interact with a channel:
+
+- Click the app and select `OAuth & Permissions` tab in the left sidebar.
+- Scroll down to `Scopes`. To send messages to a channel you need to add the `chat:write` Oauth Scope.
+- Grab your Oauth Token in `OAuth Tokens for Your Workspace`.
+
+### Set yout Bot OAuth Token
+
+Now that you have your `App Oauth Token`, go to `workers/slack-notifier/conf/default.env` file and paste it in the `SLACK_BOT_TOKEN` variable.
+
+```
+SLACK_BOT_TOKEN=xox-testestestestsetetstes123
+```
+
+### Running the project
 
 To run the project you have these alternatives:
 
@@ -33,9 +58,9 @@ $ docker-compose -f .docker/dev-compose.yaml up
 
 ```
 
-## Sending an alert notification
+### Sending an alert notification
 
-To send an alert notification to a Slack channel through this system, send a request to `/v1/events/notify_alert` endpoint following the payload specified below.
+To send an alert notification to a Slack channel through this project, send a **POST** request to `http://localhost:3000/v1/events/notify_alert` endpoint, following the payload specified below.
 
 ``` JSON
 {
@@ -44,23 +69,14 @@ To send an alert notification to a Slack channel through this system, send a req
 }
 ```
 
-Example:
-
+Example
 ``` bash
-
 # Using curl
 curl --header "Content-Type: application/json" \
   --request POST \
   --data '{"channel":"my-notification-channel","message":"This is a message"}' \
   http://localhost:3000/v1/events/notify_alert
-
 ```
-
-## How alert notification works
-
-This diagram ilustrates the notify alert sequence flow.
-
-<img src="./assets/notify-alert-sequence.png"/>
 
 ## Useful links
 
@@ -70,3 +86,4 @@ This diagram ilustrates the notify alert sequence flow.
 - [Boto3 Guide](https://boto3.amazonaws.com/v1/documentation/api/1.21.30/guide/sqs-examples.html)
 - [Slack Apps Portal](https://api.slack.com/apps)
 - [Slack SDK for Python](https://pypi.org/project/slack-sdk/#sending-a-message-to-slack)
+- [Slack Docs](https://api.slack.com/#read_the_docs)
