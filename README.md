@@ -36,6 +36,7 @@ After creating a bot, you need to set some configurations to be able to interact
 - Click the app and select `OAuth & Permissions` tab in the left sidebar.
 - Scroll down to `Scopes`. To send messages to a channel you need to add the `chat:write` Oauth Scope.
 - Grab your Oauth Token in `OAuth Tokens for Your Workspace`.
+- Invite your app to a channel using `/invite @AppName`.
 
 ### Set yout Bot OAuth Token
 
@@ -45,9 +46,9 @@ Now that you have your `App Oauth Token`, go to `workers/slack-notifier/conf/def
 SLACK_BOT_TOKEN=xox-testestestestsetetstes123
 ```
 
-### Running the project
+### Starting the system
 
-To run the project you have these alternatives:
+You have these alternatives to start the system:
 
 ``` bash
 # Runs using base image
@@ -60,7 +61,7 @@ $ docker-compose -f .docker/dev-compose.yaml up
 
 ### Sending an alert notification
 
-To send an alert notification to a Slack channel through this project, send a **POST** request to `http://localhost:3000/v1/events/notify_alert` endpoint, following the payload specified below.
+To send an alert notification to a Slack channel through this system, send a **POST** request to `http://localhost:3000/v1/events/notify_alert` endpoint, following the payload specified below.
 
 ``` JSON
 {
