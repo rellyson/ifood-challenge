@@ -10,7 +10,8 @@ services:
     env_file:
       - ../server/conf/default.env
     depends_on:
-      - localstack
+      localstack:
+        condition: service_healthy
     
   slack-notifier-worker:
     build: 
@@ -19,8 +20,8 @@ services:
     env_file:
       - ../workers/slack-notifier/conf/default.env
     depends_on:
-      - server
-      - localstack
+      localstack:
+        condition: service_healthy
   
   localstack:
     container_name: ifood-localstack
@@ -28,6 +29,10 @@ services:
     ports:
       - "4566:4566"
       - "8080:8080"
+    healthcheck:
+      test: 'curl -s http://localhost:4566/health | grep "\"sqs\": \"running\""'
+      interval: 10s
+      retries: 6
     environment:
       - SERVICES=sqs
     volumes:
