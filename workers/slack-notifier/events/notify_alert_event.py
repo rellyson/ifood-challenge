@@ -26,7 +26,8 @@ class NotifyAlertEvent:
 
             try:
                 slack_message = PostMessagePayload(
-                    channel=message_body['channel'], text=message_body['message'])
+                    channel=message_body['channel'], text=message_body['message'],
+                    attachments=message_body['attachments'] or None)
 
                 asyncio.run(self.slack_service.post_message(slack_message))
 

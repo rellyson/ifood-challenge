@@ -9,6 +9,7 @@ from slack_sdk.errors import SlackApiError
 class PostMessagePayload:
     channel: str
     text: str
+    attachments: dict | None
 
 
 class SlackServiceInterface:
@@ -19,13 +20,14 @@ class SlackServiceInterface:
 
 
 class SlackService(SlackServiceInterface):
-    def __init__(self, client: WebClient)  -> None:
+    def __init__(self, client: WebClient) -> None:
         self.web_client = client
 
     async def post_message(self, message: PostMessagePayload):
         try:
             response = self.web_client.chat_postMessage(
-                channel=message.channel, text=message.text)
+                channel=message.channel, text=message.text,
+                attachments=message.attachments)
 
             return response["message"]
         except SlackApiError as e:

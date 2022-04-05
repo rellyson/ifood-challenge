@@ -44,6 +44,36 @@ func TestNotifyAlert(t *testing.T) {
 	assert.JSONEq(t, expectedPayload, string(body))
 }
 
+func TestNotifyAlertWithAttachment(t *testing.T) {
+	serviceMock := new(mocks.MessageService)
+	testController := controllers.NewEventsController(serviceMock)
+
+	serviceMock.On("SendMessageToQueue").Return(service.SendMessageResponse{}, nil)
+
+	req, err := http.NewRequest("POST", "/v1/events/notify-alert", strings.NewReader(`{"channel": "test", "message": "test", "attachments": [{"text": "a text", "fallback": "a fallback"}]}`))
+
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	rr := httptest.NewRecorder()
+	testController.NotifyAlert(rr, req)
+	res := rr.Result()
+
+	expectedPayload := `{
+		"md5_of_body":"",
+		"message_id":"",
+		"status":""
+	}`
+
+	// Check the status code is what we expect.
+	assert.Equal(t, http.StatusCreated, res.StatusCode)
+
+	// Check body payload
+	body, _ := io.ReadAll(res.Body)
+	assert.JSONEq(t, expectedPayload, string(body))
+}
+
 func TestPayloadValidation(t *testing.T) {
 	serviceMock := new(mocks.MessageService)
 	testController := controllers.NewEventsController(serviceMock)
@@ -65,6 +95,35 @@ func TestPayloadValidation(t *testing.T) {
 	expectedPayload := `{
 		"status": 400,
 		"error": "Payload is invalid: message field is missing"
+	}`
+
+	body, _ := io.ReadAll(res.Body)
+	assert.JSONEq(t, expectedPayload, string(body))
+}
+
+func TestAttachmentPayloadValidation(t *testing.T) {
+	serviceMock := new(mocks.MessageService)
+	testController := controllers.NewEventsController(serviceMock)
+
+	serviceMock.On("SendMessageToQueue").Return(service.SendMessageResponse{}, nil)
+
+	req, err := http.NewRequest("POST", "/v1/events/notify-alert", strings.NewReader(`{"channel": "test", "message": "test", "attachments": [{"text": "a text"}]}`))
+
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	rr := httptest.NewRecorder()
+	testController.NotifyAlert(rr, req)
+	res := rr.Result()
+
+	// Check the status code is what we expect.
+	assert.Equal(t, http.StatusBadRequest, res.StatusCode)
+
+	// Check body payload
+	expectedPayload := `{
+		"status": 400,
+		"error": "Payload is invalid: attachment on index 0 is missing field fallback"
 	}`
 
 	body, _ := io.ReadAll(res.Body)

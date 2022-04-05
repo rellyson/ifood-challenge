@@ -37,7 +37,7 @@ def test_delivery_message_succesfully(mock_slack_service, mock_event):
     queue_url = res["QueueUrl"]
     sqs.send_message(
         QueueUrl=queue_url,
-        MessageBody=("{\"channel\":\"teste\",\"message\":\"teste\"}")
+        MessageBody=("{\"channel\":\"test\",\"message\":\"test\",\"attachments\":[{\"text\":\"attachment-text\",\"fallback\":\"fallbacktext\"}]}")
     )
 
     mock_slack_service.post_message.return_value = {'text': 'ok'}
