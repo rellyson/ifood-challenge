@@ -31,19 +31,19 @@ This diagram ilustrates the notify alert sequence flow.
 ### Create and configure a *Slack App* to send messages
 
 You need a *Slack App* to be able to send messages to a channel. You can create an app following [this tutorial](https://slack.com/help/articles/115005265703-Create-a-bot-for-your-workspace).
-After creating a bot, you need to set some configurations to be able to interact with a channel:
+After creating an app, you need to set some configurations to be able to interact with a channel:
 
 - Click the app and select `OAuth & Permissions` tab in the left sidebar.
 - Scroll down to `Scopes`. To send messages to a channel you need to add the `chat:write` Oauth Scope.
 - Grab your Oauth Token in `OAuth Tokens for Your Workspace`.
 - Invite your app to a channel using `/invite @AppName`.
 
-### Set yout Bot OAuth Token
+### Set yout OAuth Token
 
-Now that you have your `App Oauth Token`, go to `workers/slack-notifier/conf/default.env` file and paste it in the `SLACK_BOT_TOKEN` variable.
+Now that you have your `App Oauth Token`, go to `workers/slack-notifier/conf/default.env` file and paste it in the `SLACK_OUATH_TOKEN` variable.
 
 ```
-SLACK_BOT_TOKEN=xox-testestestestsetetstes123
+SLACK_OUATH_TOKEN=xox-testestestestsetetstes123
 ```
 
 ### Starting the system

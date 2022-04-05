@@ -10,15 +10,15 @@ from services.slack_service import SlackService
 if __name__ == "__main__":
     print("Starting worker...")
     queue_url = os.environ.get('SQS_NOTIFY_ALERT_QUEUE')
-    bot_token = os.environ.get('SLACK_BOT_TOKEN')
+    oauth_token = os.environ.get('SLACK_OUATH_TOKEN')
 
-    if(queue_url == None or bot_token == None):
+    if(queue_url == None or oauth_token == None):
         print("Missing required environment variables. Exiting...")
         sys.exit()
 
     # dependencies setup
     sqs = SQSClient()
-    slack_webClient = WebClient(token=bot_token)
+    slack_webClient = WebClient(token=oauth_token)
     slack = SlackService(slack_webClient)
     event = NotifyAlertEvent(sqs, slack)
 
